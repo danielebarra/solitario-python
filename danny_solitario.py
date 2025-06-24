@@ -192,9 +192,36 @@ def Check_Sposta(x, y, index, colonne):
     if y == 8:
         print("Non puoi muovere all'interno del mazzo di RISERVA")
         return False
+    
+    if len(colonne[x]) == 0:
+        print("Non puoi muovere da una colonna VUOTA")
+        return False
+
 
     carta_x = colonne[x][index]
     
+    if y >= 9 and y <= 12:
+        seme_colonna = dict()
+
+        if len(colonne[y]) != 0:
+            carta_y = colonne[y][-1]
+            if carta_x.seme == carta_y.seme:
+                if carta_x.valore == carta_y.valore + 1:
+                    return True
+                else:
+                    print("Puoi aggiungere solo il valore immediatamente superiore della carta presente")
+                    return False
+            else:
+                print("Devi aggiungere una carta dello stesso seme")
+                return False
+        else:
+            if carta_x.valore == 1:
+                return True
+            else:
+                print("Devi inziare dall'ASSO")
+                return False
+
+
     if len(colonne[y]) != 0: 
         carta_y = colonne[y][-1]
     else:
@@ -350,7 +377,7 @@ def Sposta(colonne):
                 # FATTO: (FARE IL SISTEMA DI PESCA)
                 # FATTO: (RIPENSARE AL SISTEMA DI SELEZIONE COLONNA DA SPOSTARE)
                 # FATTO: (POSSIBILMENTE CON LE FRECCETTE)
-                # DA FARE: (FARE IL SISTEMA DELLE COLONNE FINALI)
+                # FATTO: (FARE IL SISTEMA DELLE COLONNE FINALI)
                 # DA FARE: (CONTROLLARE LA VITTORIA)
                 # DA FARE: (MENU PRINCIPALE) 
 
