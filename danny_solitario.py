@@ -160,16 +160,18 @@ def Stampa_Colonne(colonne, isPlayable):
         print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
         
         while(True):
-            #try:
-            x = msvcrt.getch().decode("utf-8").lower()
-            if x == '1':
-                Sposta(colonne)
-                break
-            elif x == '2':
-                Pesca(colonne)
-                break
-            #except UnicodeDecodeError:
-            #    pass
+            try:
+                x = msvcrt.getch().decode("utf-8").lower()
+                if x == '1':
+                    Sposta(colonne)
+                    break
+                elif x == '2':
+                    Pesca(colonne)
+                    break
+                elif x == '3':
+                    return False
+            except UnicodeDecodeError:
+                pass
 
 
 def Pesca(colonne):
@@ -303,7 +305,7 @@ def GetSpostaInput():
         if x == b'\xe0':
             x = msvcrt.getch()
 
-            if x == b'H':   # Freccette in alto
+            if x == b'P':   # Freccette in basso
                 if index == 0:
                     index = 13
                 elif index == 8:
@@ -312,7 +314,7 @@ def GetSpostaInput():
                     index -= 1
                 
 
-            elif x == b'P': # Freccette in basso
+            elif x == b'H': # Freccette in alto
                 if index == 13:
                     index = 0
                 elif index == 6:
@@ -321,6 +323,12 @@ def GetSpostaInput():
                     index += 1
         elif x == b'\r':
             return index
+        elif x == b'F' or x == b'f':
+            index = 9
+        elif x == b'R' or x == b'r':
+            index = 8
+        elif x in [b'1', b'2', b'3', b'4', b'5', b'6', b'7']:
+            index = int(x.decode()) - 1
 
         print(end=LINE_CLEAR)
         print(selezionabili[index], end='\r')
@@ -366,10 +374,12 @@ def Sposta(colonne):
                 colonne[y].append(colonne[x][i])
                 colonne[x].pop(i)
 
-                if len(colonne[x]) != 0:
-                    colonne[x][i].scoperta = True
-
+            if len(colonne[x]) != 0:
+                    colonne[x][-1].scoperta = True
+                    
             break
+
+            
             
     Stampa_Colonne(colonne, True)
     
