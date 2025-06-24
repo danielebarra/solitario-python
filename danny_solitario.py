@@ -347,9 +347,12 @@ def Sposta(colonne):
     Stampa_Colonne(colonne, True)
     
                 # FATTO: (FARE IL SISTEMA DI SPOSTAMENTO NELLE CASELLE VUOTE (RE))
-                # FARE IL SISTEMA DI PESCA
-                # RIPENSARE AL SISTEMA DI SELEZIONE COLONNA DA SPOSTARE
-                # POSSIBILMENTE CON LE FRECCETTE
+                # FATTO: (FARE IL SISTEMA DI PESCA)
+                # FATTO: (RIPENSARE AL SISTEMA DI SELEZIONE COLONNA DA SPOSTARE)
+                # FATTO: (POSSIBILMENTE CON LE FRECCETTE)
+                # DA FARE: (FARE IL SISTEMA DELLE COLONNE FINALI)
+                # DA FARE: (CONTROLLARE LA VITTORIA)
+                # DA FARE: (MENU PRINCIPALE) 
 
 
     
