@@ -92,86 +92,100 @@ def Crea_Colonne(deck):
         deck[i].scoperta = True
     print(f"Colonna {8}: {colonne[7]}")
         
-    
     return colonne
-        
-    
+
+
+def Check_Win(colonne):
+    for i in range(9, 13):
+        n = 0
+
+        for j in colonne[i]:
+            n += 1
+
+        if n != 13:
+            return False
+    return True
+
+
 def Stampa_Colonne(colonne, isPlayable):
     os.system('cls||clear')
 
-    print()
-    print()
+    if Check_Win(colonne):
+        print("VINTOOO")
+    else:
+        print()
+        print()
 
-    print("Mazzo di Riserva: ")
+        print("Mazzo di Riserva: ")
 
-    print("CR: ", end="")
-    for i in range(len(colonne[8])):
-        carta = colonne[8][i]
-        if carta.colore == "rosso":
-            print(colored(carta, red), end="")
-        else:
-            print(colored(carta, black), end="")
-        if i < len(colonne[8]) - 1:
-            print(" | ", end="")
-    
-    print()
-    print()
-    print("Mazzi Finali:")
-    
-    for i in range(9, 13):
-        print(f"CF{i - 8}: ", end="")
-        if len(colonne[i]) == 0:
-            print("VUOTA", end="")
-        else:
+        print("CR: ", end="")
+        for i in range(len(colonne[8])):
+            carta = colonne[8][i]
+            if carta.colore == "rosso":
+                print(colored(carta, red), end="")
+            else:
+                print(colored(carta, black), end="")
+            if i < len(colonne[8]) - 1:
+                print(" | ", end="")
+        
+        print()
+        print()
+        print("Mazzi Finali:")
+        
+        for i in range(9, 13):
+            print(f"CF{i - 8}: ", end="")
+            if len(colonne[i]) == 0:
+                print("VUOTA", end="")
+            else:
+                for j in range(len(colonne[i])):
+                    carta = colonne[i][j]
+
+                    if carta.colore == "rosso":
+                        print(colored(carta, red), end="")
+                    else:
+                        print(colored(carta, black), end="")
+
+                    if j < len(colonne[i]) - 1:
+                        print(" | ", end="")
+            print()
+        
+        print()
+        print("Colonne di gioco:")
+        
+        for i in range(len(colonne) - 6):
+            print("C", i + 1, ": ", sep="", end="")
+            
             for j in range(len(colonne[i])):
                 carta = colonne[i][j]
-
-                if carta.colore == "rosso":
-                    print(colored(carta, red), end="")
+                if carta.scoperta:
+                    if carta.colore == "rosso":
+                        print(colored(carta, red), end="")
+                    else:
+                        print(colored(carta, black), end="")
                 else:
-                    print(colored(carta, black), end="")
+                    print("NASCOSTA", end="")
 
                 if j < len(colonne[i]) - 1:
                     print(" | ", end="")
-        print()
-    
-    print()
-    print("Colonne di gioco:")
-    
-    for i in range(len(colonne) - 6):
-        print("C", i + 1, ": ", sep="", end="")
+                    
+            print("")
         
-        for j in range(len(colonne[i])):
-            carta = colonne[i][j]
-            if carta.scoperta:
-                if carta.colore == "rosso":
-                    print(colored(carta, red), end="")
-                else:
-                    print(colored(carta, black), end="")
-            else:
-                print("NASCOSTA", end="")
-
-            if j < len(colonne[i]) - 1:
-                print(" | ", end="")
-                
-        print("")
-    
-    if isPlayable:
-        print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
-        
-        while(True):
-            try:
-                x = msvcrt.getch().decode("utf-8").lower()
-                if x == '1':
-                    Sposta(colonne)
-                    break
-                elif x == '2':
-                    Pesca(colonne)
-                    break
-                elif x == '3':
-                    return False
-            except UnicodeDecodeError:
-                pass
+        if isPlayable:
+            print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
+            
+            while(True):
+                try:
+                    x = msvcrt.getch().decode("utf-8").lower()
+                    if x == '1':
+                        Sposta(colonne)
+                        break
+                    elif x == '2':
+                        Pesca(colonne)
+                        break
+                    elif x == '3':
+                        return False
+                except UnicodeDecodeError:
+                    pass
 
 
 def Pesca(colonne):
@@ -388,8 +402,11 @@ def Sposta(colonne):
                 # FATTO: (RIPENSARE AL SISTEMA DI SELEZIONE COLONNA DA SPOSTARE)
                 # FATTO: (POSSIBILMENTE CON LE FRECCETTE)
                 # FATTO: (FARE IL SISTEMA DELLE COLONNE FINALI)
-                # DA FARE: (CONTROLLARE LA VITTORIA)
-                # DA FARE: (MENU PRINCIPALE) 
+                # FATTO: (CONTROLLARE LA VITTORIA)
+                # DA FARE: (SCHERMATE VITTORIA E USCITA)
+                # DA FARE: (VARIE SCHERMATE DI TUTORIAL) 
+                # DA FARE: (MENU PRINCIPALE)
+                # DA FARE: (CONTROLLARE IL PROGRAMMA SU LINUX) 
 
 
     
