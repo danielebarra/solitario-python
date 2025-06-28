@@ -99,7 +99,7 @@ def Crea_Colonne(deck):
             n += 1
         print(f"Colonna {i+1}: {colonne[i]}")
     
-    for i in range (28, 52):
+    for i in range (28, 30):
         colonne[7].append(deck[i])
         deck[i].scoperta = True
     print(f"Colonna {8}: {colonne[7]}")
@@ -119,7 +119,7 @@ def Check_Win(colonne):
     return True
 
 
-def Stampa_Colonne(colonne, isPlayable):
+def Stampa_Colonne(colonne):
     os.system('cls||clear')
 
     if Check_Win(colonne):
@@ -181,21 +181,6 @@ def Stampa_Colonne(colonne, isPlayable):
                     print(" | ", end="")
                     
             print("")
-        
-        if isPlayable:
-            print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
-            
-            while(True):
-                x = getch_str()
-                if x == '1':
-                    Sposta(colonne)
-                    break
-                elif x == '2':
-                    Pesca(colonne)
-                    break
-                elif x == '3':
-                    exit()
-
 
 
 def Pesca(colonne):
@@ -203,11 +188,9 @@ def Pesca(colonne):
     if len(colonne[8]) != 0:
         colonne[7].append(colonne[8][0])
         colonne[8].pop()
-    
-    colonne[8].append(colonne[7][0])
-    del colonne[7][0]
-    
-    Stampa_Colonne(colonne, True)
+    if len(colonne[7]) != 0:
+        colonne[8].append(colonne[7][0])
+        del colonne[7][0]
 
         
 def Check_Sposta(x, y, index, colonne):
@@ -385,8 +368,8 @@ def GetSpostaInput():
          
 
 def Sposta(colonne):
-    Stampa_Colonne(colonne, False)
     
+    Stampa_Colonne(colonne)
     
     while True:
         print("\nChe colonna vuoi spostare?")
@@ -394,7 +377,7 @@ def Sposta(colonne):
         x = GetSpostaInput()
 
         if x == 13:
-            Stampa_Colonne(colonne, True)
+            return None
 
         print("Hai scelto la colonna", selezionabili[x])
 
@@ -414,7 +397,7 @@ def Sposta(colonne):
         y = GetSpostaInput()
 
         if y == 13:
-            Stampa_Colonne(colonne, True)
+            return None
             
         print("Hai scelto la colonna", selezionabili[y], end="\n\n")
 
@@ -427,12 +410,34 @@ def Sposta(colonne):
             if len(colonne[x]) != 0:
                     colonne[x][-1].scoperta = True
                     
-            break
-
-            
-            
-    Stampa_Colonne(colonne, True)
+            break 
     
+
+def MainGame():
+    deck = Generate_Deck()
+    colonne = Crea_Colonne(deck)
+    while True:
+        Stampa_Colonne(colonne)
+        
+        print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
+            
+        while(True):
+            x = getch_str()
+            if x == '1':
+                Sposta(colonne)
+                break
+            elif x == '2':
+                Pesca(colonne)
+                break
+            elif x == '3':
+                exit()
+
+        
+ 
+MainGame()
+    
+
+
                 # FATTO: (FARE IL SISTEMA DI SPOSTAMENTO NELLE CASELLE VUOTE (RE))
                 # FATTO: (FARE IL SISTEMA DI PESCA)
                 # FATTO: (RIPENSARE AL SISTEMA DI SELEZIONE COLONNA DA SPOSTARE)
@@ -444,19 +449,3 @@ def Sposta(colonne):
                 # DA FARE: (MENU PRINCIPALE)
                 # DA FARE: (CONTROLLARE IL PROGRAMMA SU LINUX) 
                 # BUG: QUANDO SI SPOSTA PIU' DI UNA CARTA NELLE COLONNE FINALI TI FA SPOSTARE ANCHE LE CARTE CON SEME DIVERSO
-
-
-    
-    
-
-def MainGame():
-    deck = Generate_Deck()
-    colonne = Crea_Colonne(deck)
-    Stampa_Colonne(colonne, True)
-    
-        
- 
-MainGame()
-    
-
-
