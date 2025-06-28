@@ -1,7 +1,19 @@
 from random import shuffle
-import msvcrt
 import os
 from termcolor import colored
+import sys
+is_Windows = sys.platform.startswith('win')
+
+try:
+    from msvcrt import getch
+except ImportError:
+    from getch import getch # type: ignore
+
+def getch_str():
+    c = getch()
+    if isinstance(c, bytes):
+        return c.decode(errors="ignore")
+    return c
 
 red = 'red'
 black = (65, 105, 225)
@@ -174,18 +186,16 @@ def Stampa_Colonne(colonne, isPlayable):
             print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
             
             while(True):
-                try:
-                    x = msvcrt.getch().decode("utf-8").lower()
-                    if x == '1':
-                        Sposta(colonne)
-                        break
-                    elif x == '2':
-                        Pesca(colonne)
-                        break
-                    elif x == '3':
-                        return False
-                except UnicodeDecodeError:
-                    pass
+                x = getch_str()
+                if x == '1':
+                    Sposta(colonne)
+                    break
+                elif x == '2':
+                    Pesca(colonne)
+                    break
+                elif x == '3':
+                    exit()
+
 
 
 def Pesca(colonne):
@@ -257,6 +267,39 @@ def Check_Sposta(x, y, index, colonne):
         
     return False
             
+            
+def get_input():
+    x = getch_str()
+    if is_Windows:
+        if x == '':
+            x = getch_str()
+            if x == 'H':
+                return 'UP'
+            elif x == 'P':
+                return 'DOWN'
+            elif x == 'K':
+                return 'LEFT'
+            elif x == 'M':
+                return 'RIGHT'
+        if x == '\r':
+            return 'ENTER'
+    else:
+        if x == '\x1b':
+            x = getch_str()
+            if x == '[':
+                x = getch_str()
+                if x == 'A':
+                    return 'UP'
+                elif x == 'B':
+                    return 'DOWN'
+                elif x == 'C':
+                    return 'RIGHT'
+                elif x == 'D':
+                    return 'LEFT'
+        elif x == '\n':
+            return 'ENTER'
+    return x         
+            
 
 def Sposta_Colonna(colonna):
     spostabili = []
@@ -274,27 +317,25 @@ def Sposta_Colonna(colonna):
     print(spostabili[index], end='\r')
 
     while True:
-        x = msvcrt.getch()
-
-        if x == b'\xe0':
-                    x = msvcrt.getch()
-                    if x == b'K':
-                        if index == 0:
-                            index = len(spostabili) - 1
-                        else:
-                            index -= 1
-                        print(end=LINE_CLEAR)
-                        print(spostabili[index], end='\r')
-
-                    elif x == b'M':
-                        if index == len(spostabili) - 1:
-                            index = 0
-                        else:
-                            index += 1
-                        print(end=LINE_CLEAR)
-                        print(spostabili[index], end='\r')
-
-        elif x == b'\r':
+        x = get_input()
+        
+        if x == 'LEFT':
+            if index == 0:
+                index = len(spostabili) - 1
+            else:
+                index -= 1
+            print(end=LINE_CLEAR)
+            print(spostabili[index], end='\r')
+            
+        elif x == 'RIGHT':
+            if index == len(spostabili) - 1:
+                index = 0
+            else:
+                index += 1
+            print(end=LINE_CLEAR)
+            print(spostabili[index], end='\r')
+            
+        elif x == 'ENTER':
             print(end=LINE_CLEAR)
             break
 
@@ -307,42 +348,37 @@ def Sposta_Colonna(colonna):
 
 def GetSpostaInput():
     
-
     LINE_CLEAR = '\x1b[2K' # <-- ANSI sequence
     index = 0
 
     print(selezionabili[index], end='\r')
 
     while True:
-        x = msvcrt.getch()
-
-        if x == b'\xe0':
-            x = msvcrt.getch()
-
-            if x == b'P':   # Freccette in basso
-                if index == 0:
-                    index = 13
-                elif index == 8:
-                    index = 6
-                else:
-                    index -= 1
-                
-
-            elif x == b'H': # Freccette in alto
-                if index == 13:
-                    index = 0
-                elif index == 6:
-                    index = 8
-                else:
-                    index += 1
-        elif x == b'\r':
-            return index
-        elif x == b'F' or x == b'f':
-            index = 9
-        elif x == b'R' or x == b'r':
-            index = 8
-        elif x in [b'1', b'2', b'3', b'4', b'5', b'6', b'7']:
-            index = int(x.decode()) - 1
+        x = get_input()
+        
+        if x == 'DOWN':
+            if index == 0:
+                index = 13
+            elif index == 8:
+                index = 6
+            else:
+                index -= 1
+        elif x == 'UP':
+            if index == 13:
+                index = 0
+            elif index == 6:
+                index = 8
+            else:
+                index += 1
+        else:
+            if x == 'ENTER':
+                return index
+            elif x in ['F', 'f']:
+                index = 9
+            elif x in ['R', 'r']:
+                index = 8
+            elif x in ['1','2','3','4','5','6','7']:
+                index = int(x) - 1
 
         print(end=LINE_CLEAR)
         print(selezionabili[index], end='\r')
