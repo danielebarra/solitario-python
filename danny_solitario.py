@@ -99,7 +99,7 @@ def Crea_Colonne(deck):
             n += 1
         print(f"Colonna {i+1}: {colonne[i]}")
     
-    for i in range (28, 30):
+    for i in range (28, 52):
         colonne[7].append(deck[i])
         deck[i].scoperta = True
     print(f"Colonna {8}: {colonne[7]}")
