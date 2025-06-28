@@ -122,65 +122,62 @@ def Check_Win(colonne):
 def Stampa_Colonne(colonne):
     os.system('cls||clear')
 
-    if Check_Win(colonne):
-        print("VINTOOO")
-    else:
-        print()
-        print()
+    print()
+    print()
 
-        print("Mazzo di Riserva: ")
+    print("Mazzo di Riserva: ")
 
-        print("CR: ", end="")
-        for i in range(len(colonne[8])):
-            carta = colonne[8][i]
-            if carta.colore == "rosso":
-                print(colored(carta, red), end="")
-            else:
-                print(colored(carta, black), end="")
-            if i < len(colonne[8]) - 1:
-                print(" | ", end="")
-        
-        print()
-        print()
-        print("Mazzi Finali:")
-        
-        for i in range(9, 13):
-            print(f"CF{i - 8}: ", end="")
-            if len(colonne[i]) == 0:
-                print("VUOTA", end="")
-            else:
-                for j in range(len(colonne[i])):
-                    carta = colonne[i][j]
-
-                    if carta.colore == "rosso":
-                        print(colored(carta, red), end="")
-                    else:
-                        print(colored(carta, black), end="")
-
-                    if j < len(colonne[i]) - 1:
-                        print(" | ", end="")
-            print()
-        
-        print()
-        print("Colonne di gioco:")
-        
-        for i in range(len(colonne) - 6):
-            print("C", i + 1, ": ", sep="", end="")
-            
+    print("CR: ", end="")
+    for i in range(len(colonne[8])):
+        carta = colonne[8][i]
+        if carta.colore == "rosso":
+            print(colored(carta, red), end="")
+        else:
+            print(colored(carta, black), end="")
+        if i < len(colonne[8]) - 1:
+            print(" | ", end="")
+    
+    print()
+    print()
+    print("Mazzi Finali:")
+    
+    for i in range(9, 13):
+        print(f"CF{i - 8}: ", end="")
+        if len(colonne[i]) == 0:
+            print("VUOTA", end="")
+        else:
             for j in range(len(colonne[i])):
                 carta = colonne[i][j]
-                if carta.scoperta:
-                    if carta.colore == "rosso":
-                        print(colored(carta, red), end="")
-                    else:
-                        print(colored(carta, black), end="")
+
+                if carta.colore == "rosso":
+                    print(colored(carta, red), end="")
                 else:
-                    print("NASCOSTA", end="")
+                    print(colored(carta, black), end="")
 
                 if j < len(colonne[i]) - 1:
                     print(" | ", end="")
-                    
-            print("")
+        print()
+    
+    print()
+    print("Colonne di gioco:")
+    
+    for i in range(len(colonne) - 6):
+        print("C", i + 1, ": ", sep="", end="")
+        
+        for j in range(len(colonne[i])):
+            carta = colonne[i][j]
+            if carta.scoperta:
+                if carta.colore == "rosso":
+                    print(colored(carta, red), end="")
+                else:
+                    print(colored(carta, black), end="")
+            else:
+                print("NASCOSTA", end="")
+
+            if j < len(colonne[i]) - 1:
+                print(" | ", end="")
+                
+        print("")
 
 
 def Pesca(colonne):
@@ -188,6 +185,7 @@ def Pesca(colonne):
     if len(colonne[8]) != 0:
         colonne[7].append(colonne[8][0])
         colonne[8].pop()
+        
     if len(colonne[7]) != 0:
         colonne[8].append(colonne[7][0])
         del colonne[7][0]
@@ -411,31 +409,144 @@ def Sposta(colonne):
                     colonne[x][-1].scoperta = True
                     
             break 
+              
+                
+def RegoleScreen():
     
+    os.system('cls||clear')
+    
+    print()
+    print("Ecco le REGOLE DEL GIOCO:")
+    print()
+    print("Si gioca con un mazzo standard di 52 carte")
+    print()
+    print("Vengono create 7 colonne, la prima con una carta, la seconda con due, e così via")
+    print("con l'ultima carta di ogni colonna scoperta e le altre coperte")
+    print("Il resto delle carte va nella COLONNA DI RISERVA, in cui è possibile pescare senza limiti")
+    print()
+    print("Lo scopo del gioco è inserire in ordine tutte le carte nelle COLONNE FINALI")
+    print("Dall'ASSO fino al RE, ogni colonna finale può contenere solo un SEME")
+    print()
+    print("ATTENZIONE!")
+    print("Puoi spostare solo le carte che sono in ordine DECRESCENTE")
+    print("e devono essere posizionate in colori alternati")
+    print()
+    print("Nelle colonne vuote puoi spostare solo i RE")
+    print()
+    print("Quando sposti l'ultima carta scoperta da una colonna, quella sottostante viene rivelata")
+    print()
+    print("Una volta posizionate tutte le carte nelle COLONNE FINALI, apparirà la schermata di VITTORIA!")
+    print()
+    print()
+    print("Premi qualsiasi pulsante per tornare alla schermata principale: ")
+    
+    while True:
+        x = getch_str()
+        break
 
+
+def ComandiScreen():
+    
+    os.system('cls||clear')
+    
+    print()
+    print("Ecco i COMANDI DI GIOCO:")
+    print()
+    print()
+    print("Per spostare una carta clicca il tasto '1'")
+    print()
+    print("Successivamente ti verrà chiesto di selezionare una colonna")
+    print("Puoi selezionarla usando FRECCIA IN SU oppure FRECCIA IN GIU'")
+    print()
+    print("Per velocizzare la selezione puoi usare anche i tasti rapidi:")
+    print("I TASTI da 1-7 selezioneranno le COLONNE da 1-7")
+    print("Il tasto 'R' selezionerà la COLONNA DI RISERVA")
+    print("Il tasto 'F' selezionerà la COLONNA FINALE 1")
+    print()
+    print()
+    print("Per pescare clicca il tasto '2'")
+    print()
+    print()
+    print("Per visualizzare le regole del gioco clicca il tasto '3'")
+    print()
+    print()
+    print("Per visualizzare di nuovo questa schermata clicca il tasto '4'")
+    print()
+    print()
+    print("Per uscire dal gioco clicca il tasto '5'")
+    print()
+    print()
+    print("Premi qualsiasi pulsante per tornare alla schermata principale: ")
+    
+    while True:
+        x = getch_str()
+        break
+
+ 
 def MainGame():
     deck = Generate_Deck()
     colonne = Crea_Colonne(deck)
+    
     while True:
+        if Check_Win(colonne):
+            print("VINTOOO")
+            break
+        
         Stampa_Colonne(colonne)
         
-        print("\nComandi: 1: SPOSTA, 2: PESCA, 3: ESCI")
+        print("\nComandi: 1: SPOSTA, 2: PESCA, 3: REGOLE, 4: COMANDI, 5: ESCI")
             
-        while(True):
-            x = getch_str()
-            if x == '1':
-                Sposta(colonne)
-                break
-            elif x == '2':
-                Pesca(colonne)
-                break
-            elif x == '3':
-                exit()
-
-        
+        x = getch_str()
+        if x == '1':
+            Sposta(colonne)
+        elif x == '2':
+            Pesca(colonne)
+        elif x == '3':
+            RegoleScreen()
+        elif x == '4':
+            ComandiScreen()
+        elif x == '5':
+            exit()
  
-MainGame()
+        
+def StartScreen():
     
+    while(True):  
+        os.system('cls||clear')
+
+        print()
+        print("BENVENUTO A SOLITARIO!")
+
+        print()
+        print()
+
+        print("Batti il gioco ordinando tutte le carte nelle colonne finali.")
+        print("Se hai bisogno di aiuto per i comandi o per le regole del gioco")
+        print()
+        print("Clicca 2 per aprire la schermata delle regole")
+        print("Clicca 3 per aprire la schermata dei comandi")
+
+        print()
+        print()
+        print("Mi raccomando DIVERTITI! Buona fortuna.")
+
+
+        print("\n\nComandi: 1: GIOCA, 2: REGOLE, 3: COMANDI, 4: ESCI")
+    
+    
+        x = getch_str()
+        if x == '1':
+            MainGame()
+            break
+        elif x == '2':
+            RegoleScreen()
+        elif x == '3':
+            ComandiScreen()
+        elif x == '4':
+            exit()
+            
+
+StartScreen()
 
 
                 # FATTO: (FARE IL SISTEMA DI SPOSTAMENTO NELLE CASELLE VUOTE (RE))
@@ -444,8 +555,8 @@ MainGame()
                 # FATTO: (POSSIBILMENTE CON LE FRECCETTE)
                 # FATTO: (FARE IL SISTEMA DELLE COLONNE FINALI)
                 # FATTO: (CONTROLLARE LA VITTORIA)
-                # DA FARE: (SCHERMATE VITTORIA E USCITA)
-                # DA FARE: (VARIE SCHERMATE DI TUTORIAL) 
-                # DA FARE: (MENU PRINCIPALE)
-                # DA FARE: (CONTROLLARE IL PROGRAMMA SU LINUX) 
+                # FATTO: (SCHERMATE VITTORIA)
+                # FATTO: (VARIE SCHERMATE DI TUTORIAL) 
+                # FATTO: (MENU PRINCIPALE)
+                # FATTO: (CONTROLLARE IL PROGRAMMA SU LINUX) 
                 # BUG: QUANDO SI SPOSTA PIU' DI UNA CARTA NELLE COLONNE FINALI TI FA SPOSTARE ANCHE LE CARTE CON SEME DIVERSO
