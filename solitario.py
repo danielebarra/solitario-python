@@ -19,9 +19,10 @@ def getch_str():
     # Altrimenti restituisce direttamente la stringa
     return c
 
+# OPTIONS
+isSimboliSelected = False
+isHighContrast = False
 
-red = 'red'
-black = (65, 105, 225)
 
 selezionabili = {
         0: "C1",
@@ -38,6 +39,8 @@ selezionabili = {
         12: "CF4",
         13: "ANNULLA"
     }
+
+
 
 # Classe di Carta definisce come è composta ogni carta
 class Carta:
@@ -61,8 +64,14 @@ class Carta:
         # Definisce se la carta è visibile al giocatore o no
         self.scoperta = False
         
+        # Imposta il simbolo della carta
+        simboli = {"Cuori": "♥", "Diamanti": "♦", "Picche": "♠", "Fiori": "♣"}
+        self.simbolo = simboli.get(self.seme, str(self.seme))
+        
         
     def __repr__(self):
+        if isSimboliSelected:
+            return self.altvalore + " " + self.simbolo
         return self.altvalore + " di " + self.seme
 
 
@@ -135,6 +144,16 @@ def ClearScreen():
 
 # Mostra tutte le colonne a schermo
 def Stampa_Colonne(colonne):
+    
+    # Gestisce i colori delle carte
+    if isHighContrast:
+        red = (255, 102, 102)
+        black = (111, 158, 251)
+    else:
+        red = "red"
+        black = (65, 105, 225)
+    
+    
     ClearScreen()
 
     print()
@@ -600,6 +619,34 @@ def VictoryScreen():
         elif x == '2':          # Se '2' termina il programma
             exit()
 
+# Schermata delle impostazioni
+def OptionsScreen():
+    global isSimboliSelected, isHighContrast
+    
+    while True:
+        ClearScreen()
+        
+        print()
+        print("Qui puoi cambiare le impostazioni di gioco")
+        print()
+        print("Premi il numero affianco all'impostazione per cambiarla")
+        print()
+        print()
+        print(f"1: Mostra simboli carte: {"ATTIVO" if isSimboliSelected else "DISATTIVO"}")
+        print(f"2: Attiva Colori ad Alto Contrasto: {"ATTIVO" if isHighContrast else "DISATTIVO"}")
+        print()
+        print()
+        print("Premi ENTER per tornare indietro")
+        
+        # Gestisce l'input dell'utente
+        x = get_input()
+        if x == '1':            # Se '1' cambia l'impostazione dei simboli
+            isSimboliSelected = not isSimboliSelected      
+        elif x == '2':          # Se '2' cambia l'impostazione del contrasto
+            isHighContrast = not isHighContrast
+        elif x == 'ENTER':          # Se 'ENTER' torna indietro
+            break
+
 # Gestisce le funzioni principali
 def MainGame():
     deck = Generate_Deck()              # Crea un mazzo
@@ -612,7 +659,7 @@ def MainGame():
         
         Stampa_Colonne(colonne)         # Stampa tutte le colonne di gioco
         
-        print("\nComandi: 1: SPOSTA, 2: PESCA, 3: REGOLE, 4: COMANDI, 5: ESCI")
+        print("\nComandi: 1: SPOSTA, 2: PESCA, 3: REGOLE, 4: COMANDI, 5: IMPOSTAZIONI, 6: ESCI")
         
         
         x = getch_str()                 # Gestisce l'input dell'utente
@@ -624,7 +671,9 @@ def MainGame():
             RegoleScreen()
         elif x == '4':                  # Se '4' mostra i comandi
             ComandiScreen()
-        elif x == '5':                  # Se '5' termina il programma
+        elif x == '5':                  # Se '5' mostra le impostazioni
+            OptionsScreen()
+        elif x == '6':                  # Se '6' termina il programma
             if ExitScreen():
                 StartScreen()
                 break
@@ -654,7 +703,7 @@ def StartScreen():
         print("Mi raccomando DIVERTITI! Buona fortuna.")
 
 
-        print("\n\nComandi: 1: GIOCA, 2: REGOLE, 3: COMANDI, 4: ESCI")
+        print("\n\nComandi: 1: GIOCA, 2: REGOLE, 3: COMANDI, 4: IMPOSTAZIONI, 5: ESCI")
     
     
         x = getch_str()             # Gestisce l'input dell'utente
@@ -665,7 +714,9 @@ def StartScreen():
             RegoleScreen()
         elif x == '3':              # Se '3' mostra i comandi
             ComandiScreen()
-        elif x == '4':              # Se '4' termina il programma
+        elif x == '4':              # Se '4' mostra le impostazioni
+            OptionsScreen()
+        elif x == '5':              # Se '5' termina il programma
             exit()
      
             
