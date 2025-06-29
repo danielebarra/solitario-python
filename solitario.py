@@ -558,6 +558,26 @@ def ComandiScreen():
     # Aspetta che l'utente prema qualsiasi pulsante
     getch_str()
 
+# Schermata d'uscita
+def ExitScreen():
+    
+    ClearScreen()
+    
+    print()
+    print("Sei sicuro di voler uscire?")
+    print()
+    print()
+    print("\nComandi: 1: ANNULLA, 2: TORNA AL MENU, 3: ESCI")
+    
+    # Gestisce l'input dell'utente
+    while True:
+        x = getch_str()
+        if x == '1':            # Se '1' annulla l'uscita dal gioco
+            return False      
+        elif x == '2':          # Se '2' torna al menu principale
+            return True
+        elif x == '3':          # Se '3' termina il programma
+            exit()
 
 # La schermata di Vittoria
 def VictoryScreen():
@@ -605,7 +625,11 @@ def MainGame():
         elif x == '4':                  # Se '4' mostra i comandi
             ComandiScreen()
         elif x == '5':                  # Se '5' termina il programma
-            exit()
+            if ExitScreen():
+                StartScreen()
+                break
+            
+            
  
 # Schermata iniziale
 def StartScreen():
