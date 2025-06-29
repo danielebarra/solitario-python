@@ -134,7 +134,7 @@ def Stampa_Colonne(colonne):
 
     print("CR: ", end="")
     if len(colonne[8]) != 0:
-        carta = colonne[8][0]
+        carta = colonne[8][-1]
         if carta.colore == "rosso":
             print(colored(carta, red), end="")
         else:
@@ -187,7 +187,7 @@ def Pesca(colonne):
 
     if len(colonne[7]) != 0:
         carta = colonne[7][0]
-        colonne[8].insert(0, carta)
+        colonne[8].append(carta)
         del colonne[7][0]
     else:
         if len(colonne[8]) != 0:
@@ -393,7 +393,7 @@ def Sposta(colonne):
         print("Hai scelto la colonna", selezionabili[x])
 
         if x == 8:
-            removeIndex = 0 - len(colonne[8])
+            removeIndex = -1
         else:
             j = 0
             for i in colonne[x]:
