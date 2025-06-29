@@ -117,8 +117,15 @@ def Check_Win(colonne):
     return True
 
 
+def ClearScreen():
+    if os.name == 'nt':  # Windows
+        os.system('cls')
+    else:  # Linux/Mac
+        os.system('clear')
+
+
 def Stampa_Colonne(colonne):
-    os.system('cls||clear')
+    ClearScreen()
 
     print()
     print()
@@ -422,7 +429,7 @@ def Sposta(colonne):
                 
 def RegoleScreen():
     
-    os.system('cls||clear')
+    ClearScreen()
     
     print()
     print("Ecco le REGOLE DEL GIOCO:")
@@ -455,7 +462,7 @@ def RegoleScreen():
 
 def ComandiScreen():
     
-    os.system('cls||clear')
+    ClearScreen()
     
     print()
     print("Ecco i COMANDI DI GIOCO:")
@@ -492,7 +499,7 @@ def ComandiScreen():
 
 def VictoryScreen():
     
-    os.system('cls||clear')
+    ClearScreen()
     
     print()
     print("COMPLIMENTI! HAI VINTO!")
@@ -539,7 +546,7 @@ def MainGame():
 def StartScreen():
     
     while(True):  
-        os.system('cls||clear')
+        ClearScreen()
 
         print()
         print("BENVENUTO A SOLITARIO!")
