@@ -2,18 +2,23 @@ from random import shuffle
 import os
 from termcolor import colored
 import sys
-is_Windows = sys.platform.startswith('win')
+is_Windows = sys.platform.startswith('win')     # Verifica se il sistema operativo è WINDOWS
 
 try:
-    from msvcrt import getch
+    from msvcrt import getch    # Windows
 except ImportError:
-    from getch import getch # type: ignore
+    from getch import getch     # type: ignore | Linux
+
 
 def getch_str():
+    # Legge un carattere dalla tastiera
     c = getch()
+    # Se il carattere è in formato bytes (tipico su Windows), decodifica in stringa
     if isinstance(c, bytes):
         return c.decode(errors="ignore")
+    # Altrimenti restituisce direttamente la stringa
     return c
+
 
 red = 'red'
 black = (65, 105, 225)
@@ -70,6 +75,7 @@ def Generate_Deck():
     # Crea il mazzo di carte
     deck = [Carta(valore, seme) for valore in range (1, 14) for seme in semi]
     
+    # Mescola il mazzo
     Shuffle_Deck(deck)
     
     return deck
@@ -92,20 +98,24 @@ def Crea_Colonne(deck):
 
     n = 0
 
+    # CREA LE 7 COLONNE DI GIOCO
     for i in range(7):
         for j in range(i + 1):
             deck[n].scoperta = (j == i)
             colonne[i].append(deck[n])
             n += 1
     
+    # CREA IL MAZZO DI RISERVA
     for i in range (28, 52):
         colonne[7].append(deck[i])
         deck[i].scoperta = True
         
     return colonne
 
-
+# Controlla la vittoria del giocatore
 def Check_Win(colonne):
+    
+    # Se in tutte le colonne finali sono presenti 13 carte allora il giocatore ha vinto
     for i in range(9, 13):
         n = 0
 
@@ -116,14 +126,14 @@ def Check_Win(colonne):
             return False
     return True
 
-
+# Pulisce lo schermo, in base al Sistema Operativo
 def ClearScreen():
     if os.name == 'nt':  # Windows
         os.system('cls')
     else:  # Linux/Mac
         os.system('clear')
 
-
+# Mostra tutte le colonne a schermo
 def Stampa_Colonne(colonne):
     ClearScreen()
 
@@ -134,11 +144,11 @@ def Stampa_Colonne(colonne):
 
     print("CR: ", end="")
     if len(colonne[8]) != 0:
-        carta = colonne[8][-1]
-        if carta.colore == "rosso":
-            print(colored(carta, red), end="")
+        carta = colonne[8][-1]                          # Prende l'ultimo elemento della colonna di Pesca
+        if carta.colore == "rosso":                     
+            print(colored(carta, red), end="")          # Se la carta è rossa allora stampa in un colore "red" già definito
         else:
-            print(colored(carta, black), end="")
+            print(colored(carta, black), end="")        # Se la carta è nera stampa in un colore "black" già definito
     
     print()
     print()
@@ -147,7 +157,7 @@ def Stampa_Colonne(colonne):
     for i in range(9, 13):
         print(f"CF{i - 8}: ", end="")
         if len(colonne[i]) == 0:
-            print("VUOTA", end="")
+            print("VUOTA", end="")                          # print VUOTA se la colonna è vuota
         else:
             for j in range(len(colonne[i])):
                 carta = colonne[i][j]
@@ -157,45 +167,49 @@ def Stampa_Colonne(colonne):
                 else:
                     print(colored(carta, black), end="")
 
-                if j < len(colonne[i]) - 1:
-                    print(" | ", end="")
+                if j < len(colonne[i]) - 1:             
+                    print(" | ", end="")                    # Stampa " | " tra le carte, se è l'ultima carta allora non lo stampa
         print()
     
     print()
     print("Colonne di gioco:")
-    
+
+    # Stampa le colonne di gioco
     for i in range(len(colonne) - 6):
         print("C", i + 1, ": ", sep="", end="")
         
         for j in range(len(colonne[i])):
             carta = colonne[i][j]
-            if carta.scoperta:
+            if carta.scoperta:                                  # Se la carta è scoperta allora la stampa
                 if carta.colore == "rosso":
                     print(colored(carta, red), end="")
                 else:
                     print(colored(carta, black), end="")
             else:
-                print("NASCOSTA", end="")
+                print("NASCOSTA", end="")                       # Se la carta è coperta stampa NASCOSTA
 
             if j < len(colonne[i]) - 1:
                 print(" | ", end="")
                 
         print("")
 
-
+# Funzione Pesca tra le carte, colonne 7 (riempita all'inizio) e 8 (da riempire)
 def Pesca(colonne):
 
+    # Sposta la carta dall'inizio della colonna 7, alla fine della 8
     if len(colonne[7]) != 0:
         carta = colonne[7][0]
         colonne[8].append(carta)
         del colonne[7][0]
     else:
+        # Se sono finite le carte nella colonna 7
         if len(colonne[8]) != 0:
-            colonne[7].extend(colonne[8])
-            colonne[8].clear()
-            shuffle(colonne[7])
+            colonne[7].extend(colonne[8])           # Copia l'intera lista della colonna 8 nella 7
+            colonne[8].clear()                      # Cancella la colonna 8
+            shuffle(colonne[7])                     # Mescola la colonna 7
 
-        
+
+# Controlla se lo sposta è valido, secondo le regole del gioco
 def Check_Sposta(x, y, index, colonne):
     if x == y:
         print("Non puoi muovere nella STESSA colonna")
@@ -212,7 +226,10 @@ def Check_Sposta(x, y, index, colonne):
 
     carta_x = colonne[x][index]
     
+    # Se la destinazione è una colonna finale
     if y >= 9 and y <= 12:
+        
+        # Controlla che, se spostato un gruppo di carte, tutte le carte siano dello stesso seme
         if index != -1 and x != 8:
             seme_colonna = set()
 
@@ -223,10 +240,11 @@ def Check_Sposta(x, y, index, colonne):
                 print("L'intera sequenza deve avere lo stesso seme")
                 return False
 
+        # Controlla se la carta può essere spostata in una colonna finale
         if len(colonne[y]) != 0:
             carta_y = colonne[y][-1]
-            if carta_x.seme == carta_y.seme:
-                if carta_x.valore == carta_y.valore + 1:
+            if carta_x.seme == carta_y.seme:                          # Se le carte hanno lo stesso seme
+                if carta_x.valore == carta_y.valore + 1:              # Se la carta da spostare è immediatamente superiore alla carta di destinazione
                     return True
                 else:
                     print("Puoi aggiungere solo il valore immediatamente superiore della carta presente")
@@ -241,17 +259,20 @@ def Check_Sposta(x, y, index, colonne):
                 print("Devi inziare dall'ASSO")
                 return False
 
-
+    # Controlla se una carta può essere spostata in una colonna di gioco
     if len(colonne[y]) != 0: 
         carta_y = colonne[y][-1]
     else:
+        # Se la colonna è vuota, può essere spostato solo il RE (carta con valore 13)
         if carta_x.valore == 13:
             return True
         else:
             print("Puoi spostare solo i RE nelle caselle vuote")
             return False
 
+    # Se la carta da spostare è immediatamente inferiore alla carta di destinazione
     if carta_x.valore == carta_y.valore - 1:
+        # Se le carte hanno colore opposto
         if carta_x.colore != carta_y.colore:
             return True
         else:
@@ -261,10 +282,13 @@ def Check_Sposta(x, y, index, colonne):
         
     return False
             
-            
+# Gestisce l'input da tastiera
 def get_input():
     x = getch_str()
+    
+    # Se l'OS è Windows
     if is_Windows:
+        # Gestisce l'inserimento delle freccette
         if x == '':
             x = getch_str()
             if x == 'H':
@@ -275,9 +299,12 @@ def get_input():
                 return 'LEFT'
             elif x == 'M':
                 return 'RIGHT'
+        # Gestisce l'inserimento di INVIO
         if x == '\r':
             return 'ENTER'
-    else:
+    else: 
+        # Se l'OS è Linux
+        # Gestisce l'inserimento delle freccette
         if x == '\x1b':
             x = getch_str()
             if x == '[':
@@ -290,14 +317,18 @@ def get_input():
                     return 'RIGHT'
                 elif x == 'D':
                     return 'LEFT'
+        # Gestisce l'inserimento di INVIO
         elif x == '\n':
             return 'ENTER'
+        
+    # Ritorna ogni altro valore inserito da tastiera
     return x         
             
-
+# Gestisce lo spostamento di più carte contemporaneamente
 def Sposta_Colonna(colonna):
     spostabili = []
 
+    # Definisce che le carte sono spostabili quando sono scoperte
     for i in colonna:
         if i.scoperta:
             spostabili.append(i)
@@ -305,11 +336,12 @@ def Sposta_Colonna(colonna):
     print("Da quale carta vuoi iniziare a spostare? (FRECCE e INVIO per selezionare)")
 
 
-    LINE_CLEAR = '\x1b[2K' # <-- ANSI sequence
+    LINE_CLEAR = '\x1b[2K' # ANSI Sequence per pulire la linea
     index = 0
 
     print(spostabili[index], end='\r')
 
+    # Scorre tra le carte selezionabili
     while True:
         x = get_input()
         
@@ -328,25 +360,30 @@ def Sposta_Colonna(colonna):
                 index += 1
             print(end=LINE_CLEAR)
             print(spostabili[index], end='\r')
-            
+        
+        # Conferma la selezione
         elif x == 'ENTER':
             print(end=LINE_CLEAR)
             break
 
     print(spostabili[index])
     
+    # Il removeIndex è la distanza dell'elemento dall'ultimo della lista
+    # L'ultimo è -1, penultimo -2, e cosi via
+    
     removeIndex = index - len(spostabili)
 
     return removeIndex
 
-
+# Gestisce la selezione delle colonne
 def GetSpostaInput():
     
-    LINE_CLEAR = '\x1b[2K' # <-- ANSI sequence
+    LINE_CLEAR = '\x1b[2K' # ANSI Sequence per pulire la linea
     index = 0
 
     print(selezionabili[index], end='\r')
 
+    # Scorre attraverso le FRECCETTE o secondo delle SCORCIATOIE
     while True:
         x = get_input()
         
@@ -365,68 +402,87 @@ def GetSpostaInput():
             else:
                 index += 1
         else:
+            # Conferma Selezione
             if x == 'ENTER':
                 return index
+            # CF1
             elif x in ['F', 'f']:
                 index = 9
+            # CR
             elif x in ['R', 'r']:
                 index = 8
+            # C1 - ... - C7
             elif x in ['1','2','3','4','5','6','7']:
                 index = int(x) - 1
 
         print(end=LINE_CLEAR)
         print(selezionabili[index], end='\r')
          
-
+# Gestisce lo spostamento tra le colonne
 def Sposta(colonne):
     
     Stampa_Colonne(colonne)
     
+    # Chiede all'utente di selezionare colonna di origine e di destinazione
     while True:
         print("\nChe colonna vuoi spostare?")
 
+        # Colonna di origine
         x = GetSpostaInput()
 
+        # 13 è ANNULLA
         if x == 13:
             return None
 
         print("Hai scelto la colonna", selezionabili[x])
 
+        # Se è CR allora prende l'ultimo elemento della colonna
         if x == 8:
             removeIndex = -1
         else:
             j = 0
+            
             for i in colonne[x]:
+                # Conta quante carte spostabili ci sono
                 if i.scoperta:
                     j += 1
+                    
+                # Se c'è più di una carta, chiama Sposta_Colonna per gestirlo
                 if j > 1:
                     removeIndex = Sposta_Colonna(colonne[x])
                     break
+                
+                # Altrimenti se c'è solo una carta prende l'ultimo e unico elemento (che è anche il primo essendo l'unico)
                 else:
                     removeIndex = -1
         
 
         print("\nIn che colonna la vuoi spostare?")
 
+        # Colonna di destinazione
         y = GetSpostaInput()
 
+        # 13 è ANNULLA
         if y == 13:
             return None
             
         print("Hai scelto la colonna", selezionabili[y], end="\n\n")
 
 
-        if Check_Sposta(x, y, removeIndex, colonne):
+        if Check_Sposta(x, y, removeIndex, colonne):    # Chiama Check_Sposta, se è TRUE esegue lo sposta
+            
+            # Dall'elemento selezionato secondo il removeIndex fino all'ultimo (-1) 
             for i in range(removeIndex, 0):
-                colonne[y].append(colonne[x][i])
-                colonne[x].pop(i)
+                colonne[y].append(colonne[x][i])        # Aggiunge la carta nella colonna di destinazione
+                colonne[x].pop(i)                       # La rimuove da quella di origine
 
+            # Se dopo lo sposta rimangono carte nella colonna di origine
             if len(colonne[x]) != 0:
-                    colonne[x][-1].scoperta = True
+                    colonne[x][-1].scoperta = True      # Scopre l'ultima carta
                     
             break 
               
-                
+# La schermata delle Regole
 def RegoleScreen():
     
     ClearScreen()
@@ -456,10 +512,11 @@ def RegoleScreen():
     print()
     print("Premi qualsiasi pulsante per tornare alla schermata principale: ")
     
+    # Aspetta che l'utente prema qualsiasi pulsante
     getch_str()
 
 
-
+# La schermata dei Comandi
 def ComandiScreen():
     
     ClearScreen()
@@ -493,10 +550,11 @@ def ComandiScreen():
     print()
     print("Premi qualsiasi pulsante per tornare alla schermata principale: ")
 
+    # Aspetta che l'utente prema qualsiasi pulsante
     getch_str()
 
 
-
+# La schermata di Vittoria
 def VictoryScreen():
     
     ClearScreen()
@@ -509,40 +567,42 @@ def VictoryScreen():
     print()
     print("\nComandi: 1: RIGIOCA, 2: ESCI")
     
+    # Gestisce l'input dell'utente
     while True:
         x = getch_str()
-        if x == '1':
-            StartScreen()
-        elif x == '2':
+        if x == '1':            # Se '1' allora ricomincia il gioco
+            StartScreen()      
+        elif x == '2':          # Se '2' termina il programma
             exit()
 
- 
+# Gestisce le funzioni principali
 def MainGame():
-    deck = Generate_Deck()
-    colonne = Crea_Colonne(deck)
+    deck = Generate_Deck()              # Crea un mazzo
+    colonne = Crea_Colonne(deck)        # Crea le colonne dal mazzo appena creato
     
     while True:
-        if Check_Win(colonne):
+        if Check_Win(colonne):          # Se Check_Win ritorna True allora mostra la schermata di vittoria
             VictoryScreen()
             break
         
-        Stampa_Colonne(colonne)
+        Stampa_Colonne(colonne)         # Stampa tutte le colonne di gioco
         
         print("\nComandi: 1: SPOSTA, 2: PESCA, 3: REGOLE, 4: COMANDI, 5: ESCI")
-            
-        x = getch_str()
-        if x == '1':
+        
+        
+        x = getch_str()                 # Gestisce l'input dell'utente
+        if x == '1':                    # Se '1' allora Sposta
             Sposta(colonne)
-        elif x == '2':
+        elif x == '2':                  # Se '2' allora Pesca
             Pesca(colonne)
-        elif x == '3':
+        elif x == '3':                  # Se '3' mostra le regole
             RegoleScreen()
-        elif x == '4':
+        elif x == '4':                  # Se '4' mostra i comandi
             ComandiScreen()
-        elif x == '5':
+        elif x == '5':                  # Se '5' termina il programma
             exit()
  
-        
+# Schermata iniziale
 def StartScreen():
     
     while(True):  
@@ -568,16 +628,17 @@ def StartScreen():
         print("\n\nComandi: 1: GIOCA, 2: REGOLE, 3: COMANDI, 4: ESCI")
     
     
-        x = getch_str()
-        if x == '1':
+        x = getch_str()             # Gestisce l'input dell'utente
+        if x == '1':                # Se '1' avvia il gioco
             MainGame()
             break
-        elif x == '2':
+        elif x == '2':              # Se '2' mostra le regole
             RegoleScreen()
-        elif x == '3':
+        elif x == '3':              # Se '3' mostra i comandi
             ComandiScreen()
-        elif x == '4':
+        elif x == '4':              # Se '4' termina il programma
             exit()
+     
             
-
+# Mostra la schermata iniziale all'avvio del programma
 StartScreen()
