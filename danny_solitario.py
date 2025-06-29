@@ -58,7 +58,7 @@ class Carta:
         else:
             self.colore = "nero"
         
-        # Definisce se la carta è visibile o no
+        # Definisce se la carta è visibile al giocatore o no
         self.scoperta = False
         
         
@@ -534,6 +534,11 @@ def ComandiScreen():
     print("I TASTI da 1-7 selezioneranno le COLONNE da 1-7")
     print("Il tasto 'R' selezionerà la COLONNA DI RISERVA")
     print("Il tasto 'F' selezionerà la COLONNA FINALE 1")
+    print()
+    print("Se nella colonna selezionata c'è più di una carta spostabile")
+    print("Puoi selezionare la carta di partenza utilizzando FRECCIA A DESTRA e FRECCIA A SINISTRA")
+    print()
+    print("Per confermare la selezione premi INVIO")
     print()
     print()
     print("Per pescare clicca il tasto '2'")
