@@ -243,7 +243,8 @@ Il programma copia tutti gli elementi dalla 8 alla 7
 Cancella l'intera colonna 8
 E rimescola la colonna 7
 
-Gli altri comandi mostreranno le schermate di Regole e Comandi.
+Gli altri comandi mostreranno le schermate di Regole, Comandi ed Uscita.
+La schermata di Uscita da' la possibilità all'utente di annullare, tornare al menu principale e terminare il programma
 
 Il programma al termine di ogni Sposta o Pesca, verificherà attraverso la funzione Check_Win() la vittoria del gioco
 
