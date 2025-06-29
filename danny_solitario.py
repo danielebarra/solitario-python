@@ -126,14 +126,12 @@ def Stampa_Colonne(colonne):
     print("Mazzo di Riserva: ")
 
     print("CR: ", end="")
-    for i in range(len(colonne[8])):
-        carta = colonne[8][i]
+    if len(colonne[8]) != 0:
+        carta = colonne[8][0]
         if carta.colore == "rosso":
             print(colored(carta, red), end="")
         else:
             print(colored(carta, black), end="")
-        if i < len(colonne[8]) - 1:
-            print(" | ", end="")
     
     print()
     print()
@@ -180,13 +178,15 @@ def Stampa_Colonne(colonne):
 
 def Pesca(colonne):
 
-    if len(colonne[8]) != 0:
-        colonne[7].append(colonne[8][0])
-        colonne[8].pop()
-        
     if len(colonne[7]) != 0:
-        colonne[8].append(colonne[7][0])
+        carta = colonne[7][0]
+        colonne[8].insert(0, carta)
         del colonne[7][0]
+    else:
+        if len(colonne[8]) != 0:
+            colonne[7].extend(colonne[8])
+            colonne[8].clear()
+            shuffle(colonne[7])
 
         
 def Check_Sposta(x, y, index, colonne):
@@ -206,7 +206,7 @@ def Check_Sposta(x, y, index, colonne):
     carta_x = colonne[x][index]
     
     if y >= 9 and y <= 12:
-        if index != -1:
+        if index != -1 and x != 8:
             seme_colonna = set()
 
             for i in colonne[x]:
@@ -385,16 +385,19 @@ def Sposta(colonne):
 
         print("Hai scelto la colonna", selezionabili[x])
 
-        j = 0
-        for i in colonne[x]:
-            if i.scoperta:
-                j += 1
-            if j > 1:
-                removeIndex = Sposta_Colonna(colonne[x])
-                break
-            else:
-                removeIndex = -1
-            
+        if x == 8:
+            removeIndex = 0 - len(colonne[8])
+        else:
+            j = 0
+            for i in colonne[x]:
+                if i.scoperta:
+                    j += 1
+                if j > 1:
+                    removeIndex = Sposta_Colonna(colonne[x])
+                    break
+                else:
+                    removeIndex = -1
+        
 
         print("\nIn che colonna la vuoi spostare?")
 
@@ -565,4 +568,4 @@ StartScreen()
                 # FATTO: (VARIE SCHERMATE DI TUTORIAL) 
                 # FATTO: (MENU PRINCIPALE)
                 # FATTO: (CONTROLLARE IL PROGRAMMA SU LINUX) 
-                # DA FARE: (MESCOLARE IL MAZZO PESCA QUANDO FINISCONO LE CARTE PESCATE)
+                # FATTO: (MESCOLARE IL MAZZO PESCA QUANDO FINISCONO LE CARTE PESCATE)
