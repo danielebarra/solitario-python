@@ -20,7 +20,7 @@ def getch_str():
     return c
 
 # OPTIONS
-isSimboliSelected = False
+isSimboliSelected = True
 isHighContrast = False
 
 
