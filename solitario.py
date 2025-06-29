@@ -458,6 +458,8 @@ def Sposta(colonne):
         # Se è CR allora prende l'ultimo elemento della colonna
         if x == 8:
             removeIndex = -1
+        elif x >= 9 and x <= 12:
+            removeIndex = -1
         else:
             j = 0
             
