@@ -449,9 +449,8 @@ def RegoleScreen():
     print()
     print("Premi qualsiasi pulsante per tornare alla schermata principale: ")
     
-    while True:
-        x = getch_str()
-        break
+    getch_str()
+
 
 
 def ComandiScreen():
@@ -486,10 +485,29 @@ def ComandiScreen():
     print()
     print()
     print("Premi qualsiasi pulsante per tornare alla schermata principale: ")
+
+    getch_str()
+
+
+
+def VictoryScreen():
+    
+    os.system('cls||clear')
+    
+    print()
+    print("COMPLIMENTI! HAI VINTO!")
+    print()
+    print()
+    print("Grazie per aver giocato, vuoi fare un'altra partita?")
+    print()
+    print("\nComandi: 1: RIGIOCA, 2: ESCI")
     
     while True:
         x = getch_str()
-        break
+        if x == '1':
+            StartScreen()
+        elif x == '2':
+            exit()
 
  
 def MainGame():
@@ -498,7 +516,7 @@ def MainGame():
     
     while True:
         if Check_Win(colonne):
-            print("VINTOOO")
+            VictoryScreen()
             break
         
         Stampa_Colonne(colonne)
