@@ -206,7 +206,15 @@ def Check_Sposta(x, y, index, colonne):
     carta_x = colonne[x][index]
     
     if y >= 9 and y <= 12:
-        seme_colonna = dict()
+        if index != -1:
+            seme_colonna = set()
+
+            for i in colonne[x]:
+                seme_colonna.add(i.seme)
+            
+            if len(seme_colonna) > 1:
+                print("L'intera sequenza deve avere lo stesso seme")
+                return False
 
         if len(colonne[y]) != 0:
             carta_y = colonne[y][-1]
@@ -558,4 +566,3 @@ StartScreen()
                 # FATTO: (MENU PRINCIPALE)
                 # FATTO: (CONTROLLARE IL PROGRAMMA SU LINUX) 
                 # DA FARE: (MESCOLARE IL MAZZO PESCA QUANDO FINISCONO LE CARTE PESCATE)
-                # BUG: QUANDO SI SPOSTA PIU' DI UNA CARTA NELLE COLONNE FINALI TI FA SPOSTARE ANCHE LE CARTE CON SEME DIVERSO
