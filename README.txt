@@ -4,14 +4,15 @@ COME AVVIARE SOLITARIO:
 Windows:
 - Installa la versione più recente di Python
 
-- Assicurati di aver installato le dipendenze seguendo le istruzioni nel file require.txt
-
 - Apri il prompt dei comandi: 
 	digita 'cmd' nel menu Start
 
 - Naviga nella directory del file: 
 	Utilizza il comando 'cd' seguito dal percorso della cartella, 
 	esempio: cd C:\Users\utente\Desktop\Solitario\
+
+- Installa le dipendenze (salta se già installate):
+	Digita nel cmd: 'pip install -r .\require.txt' (senza virgolette)
 
 - Esegui il file:
 	Digita nel cmd: 'python3 solitario.py' (senza virgolette)
@@ -35,13 +36,16 @@ Dovrai creare un ambiente virtuale (venv) in cui installare le dipendenze.
 - Attiva l'ambiente virtuale (venv):
 	Digita nel terminale: 'source nome_ambiente/bin/activate'
 
-- Installa le dipendenze una volta attivato venv:
-	Segui le istruzioni nel require.txt
+- Installa le dipendenze (salta se già installate nello stesso venv):
+	Digita nel cmd: 'pip install -r .\require.txt' (senza virgolette)
 
 - Esegui il file python:
-	Digita nel terminale: 'python solitario.py' oppure 'python3 solitario.py'
+	Digita nel terminale: 'python3 solitario.py' oppure 'python solitario.py'
 
 - Per disattivare l'ambiente virtuale (venv) utilizza il comando: 'deactivate'
+
+- ATTENZIONE:
+	Se crei un nuovo Ambiente Virtuale (venv), dovrai reinstallare le dipendenze.
 
 ----------------------------------------------------------------------------------------------------------------------
 
