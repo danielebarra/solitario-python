@@ -72,7 +72,9 @@ Per visualizzare le regole premi il tasto '3'
 
 Per visualizzare i comandi premi il tasto '4'
 
-Puoi uscire dal gioco premendo il tasto '5'
+Per aprire le impostazioni premi il tasto '5'
+
+Puoi uscire dal gioco premendo il tasto '6'
 
 ----------------------------------------------------------------------------------------------------------------------
 
