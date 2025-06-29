@@ -80,6 +80,8 @@ DESCRIZIONE DEL PROGRAMMA:
 
 Il gioco è scritto in Python.
 Per una descrizione riga per riga, leggere i commenti nello script.
+Per una descrizione dettagliata di ogni funzione continuare a leggere questo documento.
+
 
 Una volta avviato il MainGame(), crea un mazzo di 52 carte attraverso la funzione Generate_Deck()
 Generate_Deck() definisce i quattro semi, e crea 13 carte dal valore 1 al valore 13 per ogni seme (13 * 4 = 52)
@@ -92,6 +94,10 @@ In questa classe si definiscono i seguenti valori:
 "altvalore": cioè un valore con uno scopo visivo e grafico, in cui i valori 1, 11, 12 e 13 vengono sostituiti con A, J, Q, K, questo valore verrà utilizzato durante la stampa delle colonne a schermo
 "colore": definendo i semi Cuori e Diamanti come ROSSO, mentre i semi Picche e Fiori come NERO
 "scoperta": se una carta è visibile al giocatore, vengono messe tutte come False, verrà cambiato nella generazione delle colonne per far scoprire le ultime di ogni colonna.
+"simbolo": associa ad ogni seme il simbolo corrispettivo
+
+Nel __repr__ si verifica se la visualizzazione dei semi in simboli è attiva
+
 
 Successivamente alla creazione del mazzo, quest'ultimo viene mescolato utilizzando la funzione "shuffle()" importata da "random"
 
@@ -115,8 +121,11 @@ Poi stampa tutte le colonne utilizzabili:
 	CR (Colonna Riserva), CF (Colonna Finale), C (Colonna di gioco)
 
 Ogni carta viene stampata seguendo la funzione dentro la print: colored() che viene fornita dalla dipendenza 'termcolor'
-Se il valore colore è rosso allora stampa la carta con il colore red, definito all'inizio dello script
+Se il valore colore è rosso allora stampa la carta con il colore red, definito all'inizio della funzione
 Se il valore colore è nero, stamperà la carta di nero seguendo la stessa logica.
+
+Attraverso le impostazioni c'è la possibilità di cambiare la VISUALIZZAZIONE dei SEMI
+da TESTO a SIMBOLI, e di attivare i COLORI AD ALTO CONTRASTO. 
 
 Se la carta non è scoperta allora sarà stampata al suo posto la scritta 'NASCOSTA'
 
@@ -243,7 +252,12 @@ Il programma copia tutti gli elementi dalla 8 alla 7
 Cancella l'intera colonna 8
 E rimescola la colonna 7
 
-Gli altri comandi mostreranno le schermate di Regole, Comandi ed Uscita.
+Gli altri comandi mostreranno le schermate di Regole, Comandi, Impostazioni ed Uscita.
+
+Le impostazioni danno la possibilità all'utente
+di cambiare la visualizzazione dei SEMI in TESTO o in SIMBOLI
+e di attivare i COLORI AD ALTO CONTRASTO
+
 La schermata di Uscita da' la possibilità all'utente di annullare, tornare al menu principale e terminare il programma
 
 Il programma al termine di ogni Sposta o Pesca, verificherà attraverso la funzione Check_Win() la vittoria del gioco
