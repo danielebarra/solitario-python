@@ -48,7 +48,7 @@ class Carta:
         self.seme = seme
         
         # Colore della carta
-        if seme in ["Cuore", "Diamante"]:
+        if seme in ["Cuori", "Diamanti"]:
             self.colore = "rosso"
         else:
             self.colore = "nero"
@@ -65,7 +65,7 @@ class Carta:
 def Generate_Deck():
 
     # Definisce i colori del mazzo di carte
-    semi = ['Cuore', 'Diamante', 'Picche', 'Fiore']
+    semi = ['Cuori', 'Diamanti', 'Picche', 'Fiori']
 
     # Crea il mazzo di carte
     deck = [Carta(valore, seme) for valore in range (1, 14) for seme in semi]
